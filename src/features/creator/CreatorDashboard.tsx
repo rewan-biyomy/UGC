@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { MediaUploader } from "./components/MediaUploader";
 import { CreatorProfileEditor } from "./components/CreatorProfileEditor";
 import { CreatorRequests } from "./components/CreatorRequests";
+import { FloatingDashboardMenu } from "@/features/shared/components/FloatingDashboardMenu";
 
 const creatorPages = [
   { path: "/creator/profile", label: "تعديل الملف الشخصي" },
@@ -21,7 +22,7 @@ const creatorPages = [
 ] as const;
 
 export function CreatorDashboard() {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const creator = user instanceof CreatorUser ? user : null;
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ export function CreatorDashboard() {
       <header className="border-b bg-white">
         <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div><h1 className="text-xl font-bold">مساحة صانع المحتوى</h1><p className="text-xs text-muted-foreground">مرحباً، {creator.name}</p></div>
-          <nav aria-label="أقسام مساحة صانع المحتوى" className="flex flex-wrap gap-2 text-sm font-medium">
+          <nav aria-label="أقسام مساحة صانع المحتوى" className="hidden flex-wrap gap-2 text-sm font-medium lg:flex">
             {creatorPages.map((page) => (
               <Link key={page.path} to={page.path}
                 aria-current={activePage.path === page.path ? "page" : undefined}
@@ -74,10 +75,14 @@ export function CreatorDashboard() {
                 {page.label}
               </Link>
             ))}
-            <Button variant="outline" onClick={() => navigate("/")}>الرئيسية</Button>
+            <Button variant="outline" onClick={() => { signOut(); navigate("/"); }}>تسجيل الخروج</Button>
           </nav>
         </div>
       </header>
+      <FloatingDashboardMenu items={[
+        ...creatorPages.map((page) => ({ label: page.label, to: page.path })),
+        { label: "تسجيل الخروج", onSelect: () => { signOut(); navigate("/"); } },
+      ]} />
       <main className="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-6 sm:px-6 sm:py-8">
         {activePage.path === "/creator/profile" && <CreatorProfileEditor creator={creator} />}
         {activePage.path === "/creator/upload" && (creator.category ? (

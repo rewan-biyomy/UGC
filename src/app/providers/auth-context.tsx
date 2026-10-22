@@ -14,7 +14,7 @@ import { AuthContext } from "./auth-context-store";
 const STORAGE_KEY = "ugc.session";
 const DEMO_SESSION_TOKEN = "ugc-demo-session";
 const DEMO_PROFILE_KEY_PREFIX = "ugc.demo.profile.";
-const isDemoAuthEnabled = import.meta.env.DEV;
+const isDemoAuthEnabled = import.meta.env.DEV || import.meta.env.VITE_ENABLE_DEMO_AUTH === "true";
 
 function isSession(value: unknown): value is SessionDTO {
   if (!value || typeof value !== "object") return false;

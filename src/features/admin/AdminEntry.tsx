@@ -60,7 +60,9 @@ export function AdminEntry() {
         <div className="mt-7"><GoogleLoginButton onSuccess={(credential) => void handleGoogleSuccess(credential)} /></div>
         {isDemoAuthEnabled && (
           <div className="mt-6 rounded-xl border border-dashed p-4 text-center">
-            <p className="text-sm text-amber-800">حساب تجريبي للتطوير فقط؛ بياناته محفوظة في هذا المتصفح ولا تمنح صلاحيات على خادم حقيقي.</p>
+            <p className="text-sm font-semibold text-amber-900">حساب أدمن تجريبي · بدون كلمة مرور</p>
+            <p dir="ltr" className="mt-1 text-sm text-amber-800">admin.demo@creatorlane.local</p>
+            <p className="mt-1 text-xs text-amber-800">للتجربة فقط؛ البيانات محلية ولا تمنح صلاحيات على خادم حقيقي.</p>
             <Button className="mt-3" variant="outline" disabled={busy} onClick={() => void handleDemoSignIn()}>
               الدخول بحساب أدمن تجريبي
             </Button>

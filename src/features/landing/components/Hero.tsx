@@ -1,16 +1,23 @@
 import { ArrowRight, Play, ShieldCheck, Smartphone, Star } from "lucide-react";
 import { motion } from "motion/react";
+import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/ugc-hero.svg";
 import { AnimatedChar } from "./AnimatedChar";
 
 const headline = "Welcome to UGC Marketplace";
+const visibleCharacterCount = headline.replaceAll(" ", "").length;
+const headlineWords = headline.split(" ").reduce<Array<{ word: string; startIndex: number }>>((words, word) => {
+  const startIndex = words.length ? words[words.length - 1].startIndex + words[words.length - 1].word.length : 0;
+  words.push({ word, startIndex });
+  return words;
+}, []);
 
 export function Hero() {
   return (
-    <section className="relative min-h-[760px] overflow-hidden bg-ink-950 text-white">
+    <section className="relative min-h-[680px] overflow-hidden bg-ink-950 text-white lg:min-h-[760px]">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_30%,rgba(124,58,237,.34),transparent_46%),radial-gradient(ellipse_at_10%_90%,rgba(217,70,239,.18),transparent_40%)]" />
-      <div className="relative mx-auto grid min-h-[760px] max-w-7xl items-center gap-14 px-6 pb-16 pt-32 lg:grid-cols-[1.05fr_.95fr] lg:px-10">
+      <div className="relative mx-auto grid min-h-[680px] max-w-7xl items-center gap-10 px-5 pb-12 pt-28 sm:px-6 lg:min-h-[760px] lg:grid-cols-[1.05fr_.95fr] lg:gap-14 lg:px-10 lg:pb-16 lg:pt-32">
         <div>
           <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm text-violet-100"><span className="h-2 w-2 rounded-full bg-emerald-400" /> سوق صنّاع المحتوى المصمم للعلامات التجارية</p>
           <motion.div
@@ -20,14 +27,21 @@ export function Hero() {
             className="mt-7 max-w-2xl"
           >
             <motion.h1
+              dir="ltr"
+              lang="en"
               aria-label={headline}
-              initial="rest"
-              animate="rest"
-              whileHover="hover"
-              whileTap="hover"
-              className="m-0 text-5xl font-extrabold leading-[1.3] text-white sm:text-6xl lg:text-7xl"
+              className="m-0 text-left text-4xl font-extrabold leading-[1.25] text-white sm:text-5xl lg:text-7xl"
             >
-              {Array.from(headline, (char, index) => <AnimatedChar key={`${char}-${index}`} char={char} index={index} />)}
+              {headlineWords.map(({ word, startIndex }, wordIndex) => (
+                <Fragment key={`${word}-${wordIndex}`}>
+                  {wordIndex > 0 && " "}
+                  <span className="inline-block whitespace-nowrap">
+                    {Array.from(word, (char, index) => (
+                      <AnimatedChar key={index} char={char} index={startIndex + index} characterCount={visibleCharacterCount} />
+                    ))}
+                  </span>
+                </Fragment>
+              ))}
             </motion.h1>
           </motion.div>
           <p className="mt-6 max-w-xl text-lg leading-8 text-white/65">اكتشف صنّاع محتوى موثوقين، وتصفّح أعمالهم المميزة، وانطلق بحملتك القادمة. يراجع فريقنا كل طلب ويتولى تنسيقه.</p>
@@ -42,7 +56,7 @@ export function Hero() {
         <motion.div className="relative mx-auto w-full max-w-lg" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }}>
           <div className="absolute -inset-5 rounded-[3rem] bg-gradient-to-br from-violet-500/30 to-fuchsia-500/20 blur-2xl" />
           <div className="relative overflow-hidden rounded-[2rem] border border-white/15 bg-white/5 p-3 shadow-2xl">
-            <img src={heroImage} alt="مشهد إبداعي لتصوير محتوى منتجات احترافي" className="h-[420px] w-full rounded-[1.5rem] object-cover sm:h-[500px]" />
+            <img src={heroImage} alt="مشهد إبداعي لتصوير محتوى منتجات احترافي" className="h-[300px] w-full rounded-[1.5rem] object-cover sm:h-[420px] lg:h-[500px]" />
             <div className="absolute right-7 top-8 flex items-center gap-2 rounded-2xl border border-white/15 bg-ink-900/85 px-4 py-3 text-sm shadow-xl backdrop-blur"><ShieldCheck className="text-emerald-400" size={18} /> أعمال معتمدة</div>
             <div className="absolute bottom-8 left-7 flex items-center gap-2 rounded-2xl border border-white/15 bg-ink-900/85 px-4 py-3 text-sm shadow-xl backdrop-blur"><Smartphone className="text-fuchsia-300" size={18} /> فيديو عمودي 9:16</div>
             <div className="absolute bottom-24 right-7 flex items-center gap-2 rounded-2xl border border-white/15 bg-ink-900/85 px-4 py-3 text-sm shadow-xl backdrop-blur"><Play className="text-amber-300" size={17} /> أعمال جاهزة لحملتك</div>

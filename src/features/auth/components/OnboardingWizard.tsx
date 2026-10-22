@@ -222,9 +222,14 @@ export function OnboardingWizard() {
             <p className="mt-2 text-muted-foreground">اخترت الانضمام بصفتك {role === "CLIENT" ? "علامة تجارية" : "صانع محتوى"}.</p>
             {isDemoAuthEnabled && (
               <div className="mt-6 rounded-xl border border-dashed p-4 text-center">
-                <p className="text-sm text-muted-foreground">الوضع التجريبي: جرّب المنصة دون ربط Google أو الخادم.</p>
+                <p className="text-sm font-semibold">دخول تجريبي بدون كلمة مرور</p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {role === "CLIENT" ? "حساب العلامة التجارية" : "حساب صانع المحتوى"}:
+                  {" "}<span dir="ltr" className="inline-block">demo@creatorlane.local</span>
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">بيانات هذا الحساب محفوظة في المتصفح الحالي فقط.</p>
                 <Button type="button" className="mt-3" onClick={() => void handleDemoSignIn()} disabled={busy}>
-                  المتابعة بحساب تجريبي
+                  الدخول بحساب {role === "CLIENT" ? "العلامة التجارية" : "صانع المحتوى"} التجريبي
                 </Button>
               </div>
             )}

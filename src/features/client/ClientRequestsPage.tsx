@@ -10,6 +10,7 @@ import { PortfolioService } from "@/components/core/services/PortfolioService";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { EmptyState } from "@/features/shared/components/EmptyState";
+import { FloatingDashboardMenu } from "@/features/shared/components/FloatingDashboardMenu";
 
 const statusLabels: Record<string, string> = {
   SUBMITTED: "قيد مراجعة المنصة",
@@ -25,7 +26,7 @@ const statusLabels: Record<string, string> = {
 };
 
 export function ClientRequestsPage() {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const client = user instanceof ClientUser ? user : null;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -74,9 +75,14 @@ export function ClientRequestsPage() {
             <p className="text-xs font-semibold text-brand-600">{client.brandName ?? "UGC Market"}</p>
             <h1 className="text-xl font-bold">طلبات حملاتي</h1>
           </div>
-          <Button variant="outline" onClick={() => navigate("/client")}>العودة إلى التصفح</Button>
+          <Button className="hidden sm:inline-flex" variant="outline" onClick={() => navigate("/client")}>العودة إلى التصفح</Button>
         </div>
       </header>
+      <FloatingDashboardMenu items={[
+        { label: "تصفح المبدعين", to: "/client" },
+        { label: "طلباتي", to: "/client/requests" },
+        { label: "تسجيل الخروج", onSelect: signOut },
+      ]} />
       <section className="mx-auto max-w-5xl space-y-4 px-4 py-6 sm:px-6 sm:py-8">
         {requests.isLoading ? (
           <div className="h-48 animate-pulse rounded-2xl bg-white" />
